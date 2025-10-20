@@ -1,0 +1,10 @@
+flowchart LR
+  APIServer[API Server] -->|List/Watch| Informers
+  Informers -->|Pods/Nodes/PV/…| Queue[SchedulingQueue]
+  Queue -->|Pop| Scheduler
+  Scheduler -->|Phases| Framework
+  Scheduler -->|Assume/Forget| Cache
+  Framework -->|Plugins| Plugins[In-tree/Out-of-tree]
+  Scheduler -->|Bind/Status| APIServer
+  APIServer --> Kubelet
+

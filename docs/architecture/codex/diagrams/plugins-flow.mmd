@@ -1,0 +1,21 @@
+flowchart TB
+  Q[QueueSort] --> PF[PreFilter]
+  PF --> F[Filter]
+  F -->|no nodes| PoF[PostFilter]
+  PoF -->|preempt/nominating| Q
+  F -->|feasible nodes| PS[PreScore]
+  PS --> S[Score]
+  S --> NS[NormalizeScore]
+  NS --> Sel[selectHost]
+  Sel --> Res[Reserve]
+  Res --> Per[Permit/Wait]
+  Per -->|reject| Unres[Unreserve]
+  Unres --> Q
+  Per -->|wait or success| PBF[PreBindPreFlight]
+  PBF --> PB[PreBind]
+  PB --> B[Bind]
+  B --> PoB[PostBind]
+
+  classDef phase fill:#eef,stroke:#99c
+  class Q,PF,F,PoF,PS,S,NS,Sel,Res,Per,PBF,PB,B,PoB,Unres phase
+

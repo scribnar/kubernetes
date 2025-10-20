@@ -1,0 +1,17 @@
+stateDiagram-v2
+  [*] --> ActiveQ
+  ActiveQ: New pods; moved after backoff
+  BackoffQ: Exponential delay per pod
+  Unschedulable: Pods failed Filter/PostFilter
+
+  ActiveQ --> Sched: Pop()
+  Sched --> Unschedulable: Failure (with plugin causes)
+  Unschedulable --> BackoffQ: Event triggers, backoff remaining
+  Unschedulable --> ActiveQ: Event triggers, skip backoff
+  BackoffQ --> ActiveQ: Backoff window elapsed
+
+  note right of Unschedulable
+    QueueingHints guide whether events
+    move pods immediately or after backoff
+  end note
+

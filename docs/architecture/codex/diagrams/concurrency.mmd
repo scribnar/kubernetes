@@ -1,0 +1,32 @@
+flowchart TB
+  subgraph Informers
+    IN[SharedInformerFactory] --> EH[Event Handlers]
+  end
+  subgraph Queue
+    AQ[activeQ]
+    BQ[backoffQ]
+    UQ[unschedulable]
+  end
+  subgraph Scheduler
+    SL[Schedule loop goroutine]
+    BG[Binding goroutine]
+  end
+  subgraph Cache
+    CC[Assume/Finish/Forget]
+    SS[Snapshot]
+  end
+
+  EH -->|Add/Upd/Del| AQ
+  EH -->|MoveAllToActiveOrBackoffQueue| AQ
+  SL -->|Pop| AQ
+  AQ -->|Flush| SL
+  BQ -->|Timer| AQ
+  SL --> CC
+  CC --> SS
+  SL --> BG
+
+  note right of Scheduler
+    Context cancellation and Permit/Wait
+    coordinate end-of-cycle
+  end note
+

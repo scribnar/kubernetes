@@ -1,0 +1,25 @@
+# Plugins Catalog (In-tree)
+
+Each entry lists purpose, phases, key args (if applicable), tips, and code path. Sources live under `pkg/scheduler/framework/plugins/<name>/`.
+
+- PrioritySort (queuesort): order pods in the queue by priority and FIFO within priority. Phases: QueueSort. Args: —. Tips: long backoff can starve low priority pods; rely on backoffQ fairness. Path: `pkg/scheduler/framework/plugins/queuesort`.
+- SchedulingGates: defer pods until gates cleared. Phases: PreEnqueue. Args: —. Tips: ensure controllers clear gates or pods will never schedule. Path: `pkg/scheduler/framework/plugins/schedulinggates`.
+- NodeUnschedulable: filter nodes marked unschedulable. Phases: Filter. Args: —. Tips: DaemonSet pods with tolerations may still bypass other constraints. Path: `pkg/scheduler/framework/plugins/nodeunschedulable`.
+- NodeName: bind only if `spec.nodeName` matches. Phases: Filter. Args: —. Tips: forces strict placement; often used by kubelet static pods. Path: `pkg/scheduler/framework/plugins/nodename`.
+- TaintToleration: enforce taints and optionally score. Phases: Filter, PreScore, Score. Args: —. Tips: missing tolerations are common cause of Unschedulable. Path: `pkg/scheduler/framework/plugins/tainttoleration`.
+- NodeAffinity: enforce `nodeAffinity` and prefer matches. Phases: PreFilter, Filter, PreScore, Score. Args: `NodeAffinityArgs`. Tips: watch label churn; QueueingHints will requeue on label updates. Path: `pkg/scheduler/framework/plugins/nodeaffinity`.
+- NodePorts: ensure requested hostPorts available. Phases: PreFilter, Filter. Args: —. Tips: port conflicts are node-scoped; see `NodeInfo.UsedPorts`. Path: `pkg/scheduler/framework/plugins/nodeports`.
+- NodeResourcesFit: check CPU/memory/extended resources; score nodes by strategy. Phases: PreFilter, Filter, PreScore, Score. Args: `NodeResourcesFitArgs` with `ScoringStrategy` (LeastAllocated, MostAllocated, RequestedToCapacityRatio). Tips: align weights with cluster goals; watch zero-request pods. Path: `pkg/scheduler/framework/plugins/noderesources`.
+- NodeResourcesBalancedAllocation: prefer balanced CPU/memory usage. Phases: PreScore, Score. Args: `NodeResourcesBalancedAllocationArgs.Resources`. Tips: complements LeastAllocated; tune for bin-packing vs. spreading. Path: `pkg/scheduler/framework/plugins/noderesources`.
+- VolumeRestrictions: CSI topology and access mode checks. Phases: PreFilter, Filter. Args: —. Tips: often fails with ReadWriteOnce pods on multi-node clusters without topology-aligned PVs. Path: `pkg/scheduler/framework/plugins/volumerestrictions`.
+- NodeVolumeLimits: enforce per-driver volume attachment limits. Phases: PreFilter, Filter. Args: —. Tips: cloud providers vary; watch transient informer lag. Path: `pkg/scheduler/framework/plugins/nodevolumelimits`.
+- VolumeBinding: late binding and scoring for PVC/PV; binds in PreBind. Phases: PreFilter, Filter, PreScore, Score, Reserve, PreBind. Args: `VolumeBindingArgs.BindTimeoutSeconds`. Tips: ensure adequate PVs in zone; binding may extend cycle time. Path: `pkg/scheduler/framework/plugins/volumebinding`.
+- VolumeZone: zone constraints for in-tree volumes. Phases: PreFilter, Filter. Args: —. Tips: superseded by CSI topology for CSI volumes. Path: `pkg/scheduler/framework/plugins/volumezone`.
+- PodTopologySpread: enforce/score distribution across topology domains. Phases: PreFilter, Filter, PreScore, Score. Args: `PodTopologySpreadArgs.DefaultingType`. Tips: defaults can surprise; verify selectors and namespaces. Path: `pkg/scheduler/framework/plugins/podtopologyspread`.
+- InterPodAffinity: enforce/score pod affinity/anti-affinity. Phases: PreFilter, Filter, PreScore, Score. Args: `InterPodAffinityArgs.HardPodAffinityWeight`. Tips: expensive on large clusters; selectors and namespaces critical. Path: `pkg/scheduler/framework/plugins/interpodaffinity`.
+- DynamicResources: integrates DRA (ResourceClaims/Slices). Phases: PreEnqueue, PreFilter, Filter, PostFilter, Reserve, PreBind. Args: `DynamicResourcesArgs.FilterTimeout`. Tips: enable feature gates and informers; timeouts trigger Unschedulable. Path: `pkg/scheduler/framework/plugins/dynamicresources`.
+- ImageLocality: prefer nodes with required images. Phases: Score. Args: —. Tips: influence is small by default; disable if registry pulls are fast. Path: `pkg/scheduler/framework/plugins/imagelocality`.
+- DefaultPreemption: choose victims and nominate node when needed. Phases: PostFilter. Args: `DefaultPreemptionArgs.{MinCandidateNodesPercentage,MinCandidateNodesAbsolute}`. Tips: tune candidates for scale; preemption is disruptive. Path: `pkg/scheduler/framework/plugins/defaultpreemption`.
+- DefaultBinder: fallback binder to API. Phases: Bind. Args: —. Tips: disable to use a custom binder only if you implement one. Path: `pkg/scheduler/framework/plugins/defaultbinder`.
+
+Config arg types live in `pkg/scheduler/apis/config` (e.g., `types.go`) and defaults in `pkg/scheduler/apis/config/v1/defaults*.go` and `.../testing/defaults/defaults.go`.

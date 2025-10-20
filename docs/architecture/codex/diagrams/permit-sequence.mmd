@@ -1,0 +1,21 @@
+sequenceDiagram
+  participant S as Scheduler (binding goroutine)
+  participant F as Framework
+  participant W as waitingPodsMap
+  participant P as PermitPlugin(s)
+  participant T as Timer(s)
+
+  S->>F: RunPermitPlugins(pod,node)
+  alt Any Wait
+    F->>W: add waitingPod(pod, timers)
+    F-->>S: Status=Wait
+    S->>F: WaitOnPermit(pod)
+    par Signals
+      P-->>W: Allow(plugin) or Reject(plugin,msg)
+      T-->>W: Reject(plugin, timeout)
+    end
+    W-->>S: Success or Unschedulable
+  else All Success
+    F-->>S: Status=nil
+  end
+

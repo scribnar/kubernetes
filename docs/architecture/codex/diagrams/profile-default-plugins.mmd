@@ -1,0 +1,66 @@
+flowchart TB
+  subgraph QueueSort
+    QS[PrioritySort]
+  end
+  subgraph PreFilter
+    PFa[NodeAffinity]
+    PFp[NodePorts]
+    PFr[NodeResourcesFit]
+    PFv1[VolumeRestrictions]
+    PFv2[NodeVolumeLimits]
+    PFvb[VolumeBinding]
+    PFvz[VolumeZone]
+    PFpts[PodTopologySpread]
+    PFipa[InterPodAffinity]
+    PFdra[DynamicResources]
+  end
+  subgraph Filter
+    Fnu[NodeUnschedulable]
+    Fnn[NodeName]
+    Ftt[TaintToleration]
+    Fna[NodeAffinity]
+    Fnp[NodePorts]
+    Fnr[NodeResourcesFit]
+    Fvr[VolumeRestrictions]
+    Fnvl[NodeVolumeLimits]
+    Fvb[VolumeBinding]
+    Fvz[VolumeZone]
+    Fpts[PodTopologySpread]
+    Fipa[InterPodAffinity]
+    Fdra[DynamicResources]
+  end
+  subgraph PostFilter
+    PoFdra[DynamicResources]
+    PoFdp[DefaultPreemption]
+  end
+  subgraph PreScore
+    PStt[TaintToleration]
+    PSna[NodeAffinity]
+    PSnr[NodeResourcesFit]
+    PSvb[VolumeBinding]
+    PSpts[PodTopologySpread]
+    PSipa[InterPodAffinity]
+    PSnba[NodeResourcesBalancedAllocation]
+  end
+  subgraph Score
+    Stt[TaintToleration (3)]
+    Sna[NodeAffinity (2)]
+    Snr[NodeResourcesFit (1)]
+    Svb[VolumeBinding (1)]
+    Spts[PodTopologySpread (2)]
+    Sipa[InterPodAffinity (2)]
+    Snba[NodeResourcesBalancedAllocation (1)]
+    Sil[ImageLocality (1)]
+  end
+  subgraph Reserve
+    Rvb[VolumeBinding]
+    Rdra[DynamicResources]
+  end
+  subgraph PreBind
+    PBvb[VolumeBinding]
+    PBdra[DynamicResources]
+  end
+  subgraph Bind
+    Bdb[DefaultBinder]
+  end
+

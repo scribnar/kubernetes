@@ -1,0 +1,15 @@
+sequenceDiagram
+  participant S as Scheduler
+  participant F as Framework
+  participant C as Cache
+  participant API as API Server
+
+  S->>F: PostFilter(pod, diagnosis)
+  alt Preemption possible
+    F-->>S: PreemptionResult (victims,node)
+    S->>API: NominatedNodeName update
+    S->>Q: Requeue pod
+  else No candidates
+    S->>Q: Requeue with backoff
+  end
+

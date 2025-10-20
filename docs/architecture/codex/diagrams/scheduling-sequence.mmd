@@ -1,0 +1,39 @@
+sequenceDiagram
+  participant PI as Pod Informer
+  participant Q as SchedulingQueue
+  participant S as Scheduler
+  participant F as Framework
+  participant C as Cache
+  participant X as Extenders
+  participant API as API Server
+  participant K as Kubelet
+
+  PI->>Q: Add unscheduled Pod
+  loop Schedule loop
+    Q->>S: Pop QueuedPodInfo
+    S->>F: New CycleState
+    S->>C: UpdateSnapshot (immutable view)
+    S->>F: PreFilter(pod)
+    par per-node filtering
+      F->>F: Filter(node)
+    end
+    alt no feasible nodes
+      S->>F: PostFilter (may Preempt)
+      F-->>S: NominatingInfo (optional)
+      S->>Q: Requeue (backoff/active)
+      continue
+    end
+    S->>F: PreScore/Score/Normalize
+    S->>X: (optional) Extender score
+    S->>S: selectHost()
+    S->>C: Assume(pod,node)
+    S->>F: Reserve/Permit
+    par Bind asynchronously
+      S->>F: PreBindPreFlight/PreBind
+      S->>API: Bind(pod->node)
+      API-->>K: Pod assigned
+      S->>F: PostBind
+      S->>C: FinishBinding/Forget on failure
+    end
+  end
+
