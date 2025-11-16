@@ -164,9 +164,12 @@ This directory contains comprehensive architecture documentation for the shared 
 
 ### Part III: apimachinery Library (Documents 5-7)
 
-#### 📋 05 - apimachinery: Runtime and Scheme
+#### ✅ [05 - apimachinery: Runtime and Scheme](./05-runtime-scheme.md)
 
-**Planned Content**:
+**Status**: ✅ Complete (1,771 lines, 12 diagrams, 25+ code references)
+**Last Updated**: 2025-11-05
+
+**Content**:
 - Scheme architecture
 - Type registration (GVK ↔ Go Type)
 - Object kind determination
@@ -192,9 +195,12 @@ This directory contains comprehensive architecture documentation for the shared 
 
 ---
 
-#### 📋 06 - apimachinery: Serialization and Conversion
+#### ✅ [06 - apimachinery: Serialization and Conversion](./06-serialization-conversion.md)
 
-**Planned Content**:
+**Status**: ✅ Complete (1,935 lines, 15 diagrams, 30+ code references)
+**Last Updated**: 2025-11-05
+
+**Content**:
 - Codec architecture
 - Serializer chain
 - Encoding formats (JSON, YAML, Protobuf, CBOR)
@@ -282,135 +288,107 @@ This directory contains comprehensive architecture documentation for the shared 
 
 ---
 
-#### 📋 09 - component-base: Config, Logs, and Feature Gates
+#### ✅ 09 - component-base: Config, Logs, and Feature Gates
 
-**Planned Content**:
+**Status**: ✅ Complete (2,761 lines, 7+ diagrams, 40+ code refs) - Session 5
 
-**Configuration**:
-- Config loading patterns
-- Flag binding
-- Config file formats
-- Environment variables
+**Content**:
 
-**Logging**:
-- klog integration
-- Structured logging
-- Log levels
-- Contextual logging
-- Log output formats (text, JSON)
+**Configuration Management**:
+- ClientConnectionConfiguration, LeaderElectionConfiguration
+- Configuration loading from flags, files, and env vars
+- Validation patterns and best practices
+- Complete production controller configuration
+
+**Structured Logging with klog**:
+- Structured logging API (InfoS, ErrorS)
+- Verbosity levels (0-10) and when to use them
+- Log formats: text (default) and JSON (production)
+- VModule for per-file verbosity control
 
 **Feature Gates**:
-- Feature gate architecture
-- Feature lifecycle (Alpha → Beta → GA)
-- Runtime feature gate checks
-- Feature gate configuration
+- Feature lifecycle: Alpha → Beta → GA → Deprecated
+- FeatureGate interface and MutableFeatureGate
+- Runtime feature checking patterns
+- Testing with feature gates
 
 **Version Information**:
-- Version struct
-- Git commit and tree state
-- Build date and platform
-
-**Diagrams to Include**:
-- Config loading sequence
-- Feature gate state machine
-- Log flow architecture
-- Version information structure
+- Version struct with build metadata
+- Setting version at build time with -ldflags
+- Exposing version via --version flag and HTTP endpoint
 
 ---
 
-### Part V: apiserver Library (Documents 10-12)
+### Part V: apiserver Library (Documents 10-12) - **OPTIONAL ADVANCED TOPICS**
 
-#### 📋 10 - apiserver: Server Framework and Config
+**Scope**: Lightweight usage guides for building custom API servers with k8s.io/apiserver library
 
-**Planned Content**:
-- GenericAPIServer architecture
-- Server configuration
-- Secure serving setup
-- Handler chain building
-- Delegated authentication
-- Request context
-- Post-start hooks
-- Pre-shutdown hooks
-- Graceful shutdown
-- Health checks (healthz, livez, readyz)
+**Note**: These are **optional** documents covering advanced topics. The core controller development knowledge (Phases 1-3, Documents 01-09 & 13) is **100% COMPLETE**. Only ~1% of developers need to build custom API servers.
 
-**Key Components**:
-- `Config` - Server configuration
-- `GenericAPIServer` - Server implementation
-- `SecureServingInfo` - HTTPS configuration
-- `AuthenticationInfo` - Authentication config
-- `AuthorizationInfo` - Authorization config
-
-**Diagrams to Include**:
-- GenericAPIServer architecture
-- Server initialization sequence
-- Handler chain construction
-- Request flow through filters
-- Post-start hook execution
-- Graceful shutdown sequence
+**Differentiation from `apiserver/` folder**:
+- **Common docs (here)**: "How to USE the library" - usage guides, tutorials, step-by-step examples
+- **Apiserver docs**: "How it WORKS internally" - architecture, implementation details, internals
+- **Audience**: Custom API server developers vs API server architects
+- **Overlap**: Minimal - complementary perspectives with heavy cross-referencing
 
 ---
 
-#### 📋 11 - apiserver: Storage and Registry
+#### 📋 10 - Server Framework Usage (~1,400 lines)
+
+**Purpose**: Show how to USE GenericAPIServer to build a custom API server
 
 **Planned Content**:
-- Storage interface abstraction
-- etcd3 storage implementation
-- Cacher for watch caching
-- Store interface
-- Generic registry pattern
-- RESTStorage implementation
-- List and watch from storage
-- Resource versioning
-- Consistency guarantees
+- Overview: What is GenericAPIServer and when to use it (200 lines)
+- Quick Start: Complete minimal custom API server example (400 lines)
+- Configuration Deep Dive: Config struct, security settings (400 lines)
+- Advanced Topics: Hooks, graceful shutdown, health checks (300 lines)
+- Cross-References: Links to `apiserver/` architectural docs (100 lines)
 
-**Key Components**:
-- `Interface` - Storage abstraction
-- `Cacher` - Watch cache
-- `Store` - REST CRUD operations
-- `RESTStorage` - REST handlers for resources
+**Key Focus**: Step-by-step tutorial with complete working code
 
-**Diagrams to Include**:
-- Storage architecture
-- Storage interface hierarchy
-- Cacher architecture
-- Watch cache flow
-- List/Watch from etcd
-- Generic registry pattern
+**Cross-references to**:
+- `../apiserver/high-level/02-server-chain-architecture.md` (architecture)
+- `../apiserver/middle-level/01-request-pipeline.md` (how requests flow)
 
 ---
 
-#### 📋 12 - apiserver: Admission, Authentication, and Authorization
+#### 📋 11 - Storage & Registry Usage (~1,500 lines)
+
+**Purpose**: Show how to add storage and resources to a custom API server
 
 **Planned Content**:
+- Overview: Storage interface and registry pattern (200 lines)
+- Quick Start: Adding a resource with CRUD operations (500 lines)
+- RESTStorage Implementation: Complete example (400 lines)
+- Registry Pattern Usage: Registering resources (250 lines)
+- Caching Configuration: Watch cache setup (150 lines)
 
-**Admission Control**:
-- Admission chain architecture
-- Admission plugins
-- ValidatingAdmissionPolicy
-- MutatingAdmissionWebhook
-- ValidatingAdmissionWebhook
-- Admission phase (Mutating → Validating)
+**Key Focus**: Complete resource implementation tutorial
 
-**Authentication**:
-- Authenticator interface
-- Authentication strategies (tokens, certificates, webhooks)
-- User and group extraction
-- Service account tokens
+**Cross-references to**:
+- `../apiserver/middle-level/02-storage-layer.md` (storage architecture)
+- `../apiserver/low-level/02-registry-pattern.md` (registry details)
+- `../apiserver/low-level/04-cacher-architecture.md` (caching internals)
 
-**Authorization**:
-- Authorizer interface
-- RBAC authorizer
-- Webhook authorizer
-- Node authorizer
-- Decision (Allow, Deny, NoOpinion)
+---
 
-**Diagrams to Include**:
-- Admission chain sequence
-- Admission webhook flow
-- Authentication sequence
-- Authorization decision flow
-- Request filter chain
+#### 📋 12 - Security Integration (~1,300 lines)
+
+**Purpose**: Show how to add authentication, authorization, and admission to a custom API server
+
+**Planned Content**:
+- Overview: Security components (150 lines)
+- Authentication Setup: Token, cert, webhook (400 lines)
+- Authorization Setup: RBAC configuration (350 lines)
+- Admission Setup: Webhook integration (300 lines)
+- Complete Example: Secure API server (100 lines)
+
+**Key Focus**: Security configuration tutorial
+
+**Cross-references to**:
+- `../apiserver/middle-level/04-authentication.md` (auth architecture)
+- `../apiserver/middle-level/05-authorization.md` (authz architecture)
+- `../apiserver/middle-level/06-admission-control.md` (admission architecture)
 
 ---
 

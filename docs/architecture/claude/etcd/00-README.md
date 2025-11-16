@@ -1,9 +1,27 @@
 # etcd Integration in Kubernetes - Complete Architecture Guide
 
 **Version**: 1.0
-**Last Updated**: 2025-10-21
+**Last Updated**: 2025-11-05
+**Status**: 70% Complete (14/20 files)
 **Audience**: Kubernetes operators, contributors, and SREs
 **Scope**: Kubernetes-etcd integration architecture and operations
+
+---
+
+## 📊 Project Tracking & Navigation
+
+**New to this documentation?** Start here:
+- **[QUICK-REFERENCE.md](QUICK-REFERENCE.md)** - Fast navigation and topic index
+- **[STATUS.md](STATUS.md)** - Current project status snapshot
+
+**Progress tracking:**
+- **[PROGRESS.md](PROGRESS.md)** - Detailed progress tracking (22K)
+- **[METRICS.md](METRICS.md)** - Comprehensive metrics dashboard (12K)
+- **[CHECKLIST.md](CHECKLIST.md)** - Phase completion checklist (12K)
+
+**For contributors:**
+- **[CONTINUE.md](CONTINUE.md)** - Next session instructions
+- **[SESSION-4-SUMMARY.md](SESSION-4-SUMMARY.md)** - Latest session summary
 
 ---
 
