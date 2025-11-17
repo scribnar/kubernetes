@@ -1571,9 +1571,16 @@ attachdetach_controller_volumes_in_state{state="actual"}
 - `04-pv-controller-integration.md` - PV controller
 - `05-scheduler-integration.md` - Volume binding
 
-### **Related Component Documentation**
-- `/docs/architecture/claude/controller-manager/` - Controller manager
-- `/docs/architecture/claude/common/` - Common patterns
+### **Related Controller-Manager Documentation**
+- **[CSI Attachment Controller](../../controller-manager/27-csi-attachment-controller.md)** - In-tree VolumeAttachment coordinator
+- **[Storage Controllers Overview](../../controller-manager/11-storage-controllers.md)** - All storage controllers
+- **[Attach/Detach Controller Architecture](../../controller-manager/13-volume-controllers.md#attachdetach-controller)** - Core attach/detach logic
+- **[Volume Protection Controllers](../../controller-manager/41-volume-protection-controllers.md)** - PV/PVC deletion protection
+
+### **Common Patterns**
+- **[Informers and SharedInformers](../../common/03-informers-sharedinformers.md)** - Watch and cache patterns
+- **[Workqueue and Leader Election](../../common/04-workqueue-leaderelection.md)** - Work distribution
+- **[Controller Patterns](../../common/13-common-patterns-integration.md)** - Reconciliation loops
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 

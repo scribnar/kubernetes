@@ -224,7 +224,12 @@ storage.k8s.io/v1:
 ### **Within kubernetes/kubernetes Architecture Docs**
 
 - **Kubelet**: `docs/architecture/claude/kubelet/` - Pod and volume management
-- **Controller Manager**: `docs/architecture/claude/controller-manager/` - Volume controllers
+- **Controller Manager Volume Controllers**:
+  - [CSI Attachment Controller](../controller-manager/27-csi-attachment-controller.md) - VolumeAttachment coordination
+  - [Storage Controllers Overview](../controller-manager/11-storage-controllers.md) - PV/PVC binding, attach/detach, expansion
+  - [Volume Controllers Deep Dive](../controller-manager/13-volume-controllers.md) - Detailed controller architecture
+  - [PVC Protection Controller](../controller-manager/41-volume-protection-controllers.md) - Deletion protection
+  - [Ephemeral Volume Controller](../controller-manager/42-ephemeral-volume-controller.md) - Inline ephemeral volumes
 - **API Server**: `docs/architecture/claude/apiserver/` - API resource storage
 - **Scheduler**: `docs/architecture/claude/scheduler/` - Pod scheduling with volumes
 - **Repository Structure**: `docs/architecture/claude/repo-structure/` - Code organization

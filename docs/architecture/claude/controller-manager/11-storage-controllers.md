@@ -780,9 +780,23 @@ spec:
 
 ### Cross-References
 
+#### **Controller-Manager Documentation**
 - **[08-workload-controllers.md](08-workload-controllers.md)** - StatefulSet volume claims
 - **[20-data-structures.md](20-data-structures.md)** - Controller structures
 - **[07-shared-infrastructure.md](07-shared-infrastructure.md)** - Informers and queues
+- **[13-volume-controllers.md](13-volume-controllers.md)** - Detailed volume controller architecture
+- **[41-volume-protection-controllers.md](41-volume-protection-controllers.md)** - PV/PVC protection details
+- **[42-ephemeral-volume-controller.md](42-ephemeral-volume-controller.md)** - Ephemeral volume details
+
+#### **CSI Documentation**
+For comprehensive Container Storage Interface coverage:
+- **[CSI Architecture Overview](../csi/high-level/01-csi-architecture.md)** - Complete CSI design
+- **[CSI API Resources](../csi/high-level/02-api-resources.md)** - VolumeAttachment, CSIDriver, CSINode
+- **[CSI Driver Deployment](../csi/high-level/03-driver-deployment.md)** - Sidecar controllers
+- **[CSI Volume Lifecycle](../csi/middle-level/01-volume-lifecycle.md)** - Stage, publish, expand operations
+- **[CSI Attach/Detach Controller](../csi/middle-level/02-attach-detach-controller.md)** - Detailed implementation
+- **[CSI PV Controller Integration](../csi/middle-level/04-pv-controller-integration.md)** - Dynamic provisioning
+- **[CSI Expansion Controller](../csi/middle-level/03-expansion-controller.md)** - Volume expansion
 
 ---
 
